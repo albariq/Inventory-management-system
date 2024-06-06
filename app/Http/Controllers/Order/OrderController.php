@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\Enums\OrderStatus;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Order\OrderStoreRequest;
-use App\Models\Customer;
-use App\Models\Order;
-use App\Models\OrderDetails;
-use App\Models\Product;
-use App\Models\User;
-use App\Mail\StockAlert;
 use Carbon\Carbon;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Product;
+use App\Mail\StockAlert;
+use App\Models\Customer;
+use App\Enums\OrderStatus;
+use Illuminate\Support\Str;
+use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Str;
+use Illuminate\Database\Eloquent\Model;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
+use App\Http\Requests\Order\OrderStoreRequest;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->count();
+        $orders = Order::with(['customer', 'details.product'])->get();
+        $sortField = 'invoice_no'; // Misalnya, nilai awal sort field
+        $sortAsc = true; // Misalnya, nilai awal sort ascending
 
-        return view('orders.index', [
-            'orders' => $orders
-        ]);
+        return view('livewire.tables.order-table', compact('orders', 'sortField', 'sortAsc'));
     }
 
     public function create()
@@ -62,55 +62,30 @@ class OrderController extends Controller
                 'table' => 'orders',
                 'field' => 'invoice_no',
                 'length' => 10,
-                'prefix' => 'INV-'
+                'prefix' => 'ORD-'
             ]),
-            'due' => (Cart::total() - $request->pay),
             'user_id' => auth()->id(),
-            'uuid' => Str::uuid(),
+            'uuid' => (string) Str::uuid(),
+            'due' => Cart::total() - $request->pay // Tambahkan nilai untuk field 'due'
         ]);
-
-        // Create Order Details
-        $contents = Cart::content();
-        $oDetails = [];
-
-        foreach ($contents as $content) {
-            $oDetails['order_id'] = $order['id'];
-            $oDetails['product_id'] = $content->id;
-            $oDetails['quantity'] = $content->qty;
-            $oDetails['unitcost'] = $content->price;
-            $oDetails['total'] = $content->subtotal;
-            $oDetails['created_at'] = Carbon::now();
-
-            OrderDetails::insert($oDetails);
+    
+        $products = Cart::content();
+    
+        foreach ($products as $product) {
+            OrderDetails::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'quantity' => $product->qty,
+                'price' => $product->price,
+                'unitcost' => $product->options->unitcost ?? 0, // Tambahkan nilai untuk field 'unitcost'
+                'total' => $product->qty * $product->price // Tambahkan nilai untuk field 'total'
+            ]);
         }
-
-        // Delete Cart Sopping History
-        Cart::destroy();
-
-        return redirect()
-            ->route('orders.index')
-            ->with('success', 'Order has been created!');
-    }
-
-    public function show($uuid)
-    {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
-        $order->loadMissing(['customer', 'details'])->get();
-        return view('orders.show', [
-            'order' => $order
-        ]);
-    }
-
-    public function update($uuid, Request $request)
-    {
-        $order = Order::where('uuid', $uuid)->firstOrFail();
-        // TODO refactoring
-
-        // Reduce the stock
+    
         $products = OrderDetails::where('order_id', $order->id)->get();
-
+    
         $stockAlertProducts = [];
-
+    
         foreach ($products as $product) {
             $productEntity = Product::where('id', $product->product_id)->first();
             $newQty = $productEntity->quantity - $product->quantity;
@@ -119,7 +94,7 @@ class OrderController extends Controller
             }
             $productEntity->update(['quantity' => $newQty]);
         }
-
+    
         if (count($stockAlertProducts) > 0) {
             $listAdmin = [];
             foreach (User::all('email') as $admin) {
@@ -132,11 +107,14 @@ class OrderController extends Controller
             'due' => '0',
             'pay' => $order->total
         ]);
-
+    
         return redirect()
             ->route('orders.complete')
             ->with('success', 'Order has been completed!');
     }
+    
+    
+    
 
     public function destroy($uuid)
     {
@@ -147,13 +125,6 @@ class OrderController extends Controller
     public function downloadInvoice($uuid)
     {
         $order = Order::with(['customer', 'details'])->where('uuid', $uuid)->firstOrFail();
-        // TODO: Need refactor
-        //dd($order);
-
-        //$order = Order::with('customer')->where('id', $order_id)->first();
-        // $order = Order::
-        //     ->where('id', $order)
-        //     ->first();
 
         return view('orders.print-invoice', [
             'order' => $order,

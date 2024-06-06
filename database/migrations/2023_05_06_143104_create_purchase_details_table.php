@@ -23,8 +23,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->integer('quantity');
-            $table->integer('unitcost');
-            $table->integer('total');
+            $table->decimal('unitcost', 10, 2)->default(0)->change();
+            $table->decimal('total', 10, 2)->default(0)->change();
             $table->timestamps();
         });
     }
