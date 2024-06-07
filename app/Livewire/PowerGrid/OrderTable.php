@@ -1,101 +1,44 @@
 <?php
 
-namespace App\Livewire\PowerGrid;
+namespace App\Livewire\Tables;
 
 use App\Models\Order;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
-use PowerComponents\LivewirePowerGrid\Button;
-use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Exportable;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
-use PowerComponents\LivewirePowerGrid\Footer;
-use PowerComponents\LivewirePowerGrid\Header;
-use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridColumns;
-use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use Livewire\Component;
+use Livewire\WithPagination;
 
-final class OrderTable extends PowerGridComponent
+class OrderTable extends Component
 {
-    public function setUp(): array
+    use WithPagination;
+
+    public $perPage = 5;
+
+    public $search = '';
+
+    public $sortField = 'invoice_no';
+
+    public $sortAsc = false;
+
+    public function sortBy($field): void
     {
-        //$this->showCheckBox();
+        if($this->sortField === $field)
+        {
+            $this->sortAsc = ! $this->sortAsc;
 
-        return [
-            Exportable::make('export')
-                ->striped()
-                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
+        } else {
+            $this->sortAsc = true;
+        }
 
-            Header::make()->showSearchInput(),
-
-            Footer::make()
-                ->showPerPage()
-                ->showRecordCount(),
-        ];
+        $this->sortField = $field;
     }
 
-    public function datasource(): Builder
+    public function render()
     {
-        return Order::query();
-    }
-
-    public function addColumns(): PowerGridColumns
-    {
-        return PowerGrid::columns()
-            ->addColumn('id')
-            ->addColumn('invoice_no')
-            ->addColumn('name_lower', fn (Order $model) => strtolower(e($model->name)))
-            ->addColumn('created_at')
-            ->addColumn('created_at_formatted', fn (Order $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
-    }
-
-    public function columns(): array
-    {
-        return [
-            Column::make('ID', 'id')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('Name', 'name')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('Created at', 'created_at')
-                ->hidden(),
-
-            Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->searchable(),
-
-            Column::action('Action')
-        ];
-    }
-
-    public function filters(): array
-    {
-        return [
-            //Filter::inputText('name'),
-            //Filter::datepicker('created_at_formatted', 'created_at'),
-        ];
-    }
-
-    public function actions(\App\Models\Order $row): array
-    {
-        return [
-            Button::add('edit')
-                ->slot('Edit: '.$row->id)
-                ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
-        ];
-    }
-
-    public function header(): array
-    {
-        return [
-            Button::make('new-modal')
-                ->slot(file_get_contents('assets/svg/eye.svg'))
-                ->class('btn btn-icon')
-                //->openModal('new', []),
-        ];
+        return view('livewire.tables.order-table', [
+            'orders' => Order::where("user_id",auth()->id())
+                ->with(['customer', 'details'])
+                ->search($this->search)
+                ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                ->paginate($this->perPage)
+        ]);
     }
 }
