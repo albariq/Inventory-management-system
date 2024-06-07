@@ -31,7 +31,31 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-deck row-cards">
-                <div class="col-sm-6 col-lg-3">
+                <div class="container">
+                    <h2>Bar Chart: Jumlah Stok per Kategori Produk</h2>
+                    <canvas id="barChart"></canvas>
+            
+                    <h2>Pie Chart: Distribusi Persentase Kategori Produk</h2>
+                    <canvas id="pieChart"></canvas>
+            
+                    <h2>Bar Chart: Stok per Produk</h2>
+                    <canvas id="stockPerProductChart"></canvas>
+            
+                    <div class="row">
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ $products }} Products
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ $orders }} Orders
+                            </div>
+                        </div>
+                        <!-- Tambahkan elemen lain sesuai kebutuhan -->
+                    </div>
+                </div>
+                {{-- <div class="col-sm-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -165,7 +189,7 @@
                             <div id="chart-active-users" class="chart-sm"></div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 -
 
                 <div class="col-12">
@@ -304,412 +328,6 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- -
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Traffic summary</h3>
-                            <div id="chart-mentions" class="chart-lg"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Locations</h3>
-                            <div class="ratio ratio-21x9">
-                                <div>
-                                    <div id="map-world" class="w-100 h-100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="row row-cards">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p class="mb-3">Using Storage <strong>6854.45 MB </strong>of 8 GB</p>
-                                    <div class="progress progress-separated mb-3">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 44%" aria-label="Regular"></div>
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 19%" aria-label="System"></div>
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 9%" aria-label="Shared"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-auto d-flex align-items-center pe-2">
-                                            <span class="legend me-2 bg-primary"></span>
-                                            <span>Regular</span>
-                                            <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-                                        </div>
-                                        <div class="col-auto d-flex align-items-center px-2">
-                                            <span class="legend me-2 bg-info"></span>
-                                            <span>System</span>
-                                            <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-                                        </div>
-                                        <div class="col-auto d-flex align-items-center px-2">
-                                            <span class="legend me-2 bg-success"></span>
-                                            <span>Shared</span>
-                                            <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-                                        </div>
-                                        <div class="col-auto d-flex align-items-center ps-2">
-                                            <span class="legend me-2"></span>
-                                            <span>Free</span>
-                                            <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="card" style="height: 28rem">
-                                <div class="card-body card-body-scrollable card-body-scrollable-shadow">
-                                    <div class="divide-y">
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar">JL</span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Jeffie Lewzey</strong> commented on your <strong>"I'm not a witch."</strong> post.
-                                                    </div>
-                                                    <div class="text-muted">yesterday</div>
-                                                </div>
-                                                <div class="col-auto align-self-center">
-                                                    <div class="badge bg-primary"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url({{ asset('static/avatars/002m.jpg') }})"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        It's <strong>Mallory Hulme</strong>'s birthday. Wish him well!
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                                <div class="col-auto align-self-center">
-                                                    <div class="badge bg-primary"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Dunn Slane</strong> posted <strong>"Well, what do you want?"</strong>.
-                                                    </div>
-                                                    <div class="text-muted">today</div>
-                                                </div>
-                                                <div class="col-auto align-self-center">
-                                                    <div class="badge bg-primary"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Emmy Levet</strong> created a new project <strong>Morning alarm clock</strong>.
-                                                    </div>
-                                                    <div class="text-muted">4 days ago</div>
-                                                </div>
-                                                <div class="col-auto align-self-center">
-                                                    <div class="badge bg-primary"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/001f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Maryjo Lebarree</strong> liked your photo.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar">EP</span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Egan Poetz</strong> registered new client as <strong>Trilia</strong>.
-                                                    </div>
-                                                    <div class="text-muted">yesterday</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/002f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Kellie Skingley</strong> closed a new deal on project <strong>Pen Pineapple Apple Pen</strong>.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/003f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Christabel Charlwood</strong> created a new project for <strong>Wikibox</strong>.
-                                                    </div>
-                                                    <div class="text-muted">4 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar">HS</span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Haskel Shelper</strong> change status of <strong>Tabler Icons</strong> from <strong>open</strong> to <strong>closed</strong>.
-                                                    </div>
-                                                    <div class="text-muted">today</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/006m.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Lorry Mion</strong> liked <strong>Tabler UI Kit</strong>.
-                                                    </div>
-                                                    <div class="text-muted">yesterday</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/004f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Leesa Beaty</strong> posted new video.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/007m.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Perren Keemar</strong> and 3 others followed you.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar">SA</span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Sunny Airey</strong> upload 3 new photos to category <strong>Inspirations</strong>.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/009m.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Geoffry Flaunders</strong> made a <strong>$10</strong> donation.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/010m.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Thatcher Keel</strong> created a profile.
-                                                    </div>
-                                                    <div class="text-muted">3 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/005f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Dyann Escala</strong> hosted the event <strong>Tabler UI Birthday</strong>.
-                                                    </div>
-                                                    <div class="text-muted">4 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar" style="background-image: url(./static/avatars/006f.jpg)"></span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Avivah Mugleston</strong> mentioned you on <strong>Best of 2020</strong>.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="row">
-                                                <div class="col-auto">
-                                                    <span class="avatar">AA</span>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="text-truncate">
-                                                        <strong>Arlie Armstead</strong> sent a Review Request to <strong>Amanda Blake</strong>.
-                                                    </div>
-                                                    <div class="text-muted">2 days ago</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header border-0">
-                            <div class="card-title">Development activity</div>
-                        </div>
-                        <div class="position-relative">
-                            <div class="position-absolute top-0 left-0 px-3 mt-1 w-75">
-                                <div class="row g-2">
-                                    <div class="col-auto">
-                                        <div class="chart-sparkline chart-sparkline-square" id="sparkline-activity"></div>
-                                    </div>
-                                    <div class="col">
-                                        <div>Today's Earning: $4,262.40</div>
-                                        <div class="text-muted"><!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                                            +5% more than yesterday</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="chart-development-activity"></div>
-                        </div>
-                        <div class="card-table table-responsive">
-                            <table class="table table-vcenter">
-                                <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Commit</th>
-                                    <th>Date</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Fix dart Sass compatibility (#29755)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">28 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm">JL</span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Change deprecated html tags to text decoration classes (#29604)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">27 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            justify-content:between ⇒ justify-content:space-between (#29734)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">26 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Update change-version.js (#29736)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">26 Nov 2019</td>
-                                </tr>
-                                <tr>
-                                    <td class="w-1">
-                                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                    </td>
-                                    <td class="td-truncate">
-                                        <div class="text-truncate">
-                                            Regenerate package-lock.json (#29730)
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap text-muted">25 Nov 2019</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                - --}}
             </div>
         </div>
     </div>
@@ -723,7 +341,7 @@
 @endpush
 
 @pushonce('page-scripts')
-    <script>
+    {{-- <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function() {
             window.ApexCharts && (new ApexCharts(document.getElementById('chart-revenue-bg'), {
@@ -936,5 +554,84 @@
             })).render();
         });
         // @formatter:on
+    </script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Data untuk Bar Chart
+            const barChartData = {
+                labels: {!! json_encode($barChartData->pluck('category')) !!},
+                datasets: [{
+                    label: 'Jumlah Stok',
+                    data: {!! json_encode($barChartData->pluck('total_stock')) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            // Data untuk Pie Chart
+            const pieChartData = {
+                labels: {!! json_encode($pieChartData->pluck('category')) !!},
+                datasets: [{
+                    data: {!! json_encode($pieChartData->pluck('product_count')) !!},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            // Data untuk Stok per Produk Chart
+            const stockPerProductData = {
+                labels: {!! json_encode($stockPerProductData->pluck('product_name')) !!},
+                datasets: [{
+                    label: 'Stok',
+                    data: {!! json_encode($stockPerProductData->pluck('stock')) !!},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            // Initialize Bar Chart
+            new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Initialize Pie Chart
+            new Chart(document.getElementById('pieChart'), {
+                type: 'pie',
+                data: pieChartData
+            });
+
+            // Initialize Stok per Produk Chart
+            new Chart(document.getElementById('stockPerProductChart'), {
+                type: 'bar',
+                data: stockPerProductData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
     </script>
 @endpushonce
