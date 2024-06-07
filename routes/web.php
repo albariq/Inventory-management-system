@@ -11,6 +11,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Order\OrderController;
+use App\Http\Controllers\Sales\SalesController;
 use App\Http\Controllers\Order\DueOrderController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Purchase\PurchaseController;
@@ -125,6 +126,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/quotations/{quotation}/edit', [QuotationController::class, 'edit'])->name('quotations.edit');
     Route::post('/quotations/complete/{quotation}', [QuotationController::class, 'update'])->name('quotations.update');
     Route::delete('/quotations/delete/{quotation}', [QuotationController::class, 'destroy'])->name('quotations.delete');
+
+    // Route Sales
+    Route::get('/sales-data', [SalesController::class, 'getSalesData']);
 });
 
 require __DIR__.'/auth.php';
