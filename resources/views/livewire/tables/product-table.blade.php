@@ -85,6 +85,18 @@
                         </a>
                     </th>
                     <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('buying_price')" href="#" role="button">
+                            {{ __('Buying Price') }}
+                            @include('inclues._sort-icon', ['field' => 'buying_price'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
+                        <a wire:click.prevent="sortBy('selling_price')" href="#" role="button">
+                            {{ __('Selling Price') }}
+                            @include('inclues._sort-icon', ['field' => 'selling_price'])
+                        </a>
+                    </th>
+                    <th scope="col" class="align-middle text-center">
                         <a wire:click.prevent="sortBy('quantity')" href="#" role="button">
                             {{ __('Quantity') }}
                             @include('inclues._sort-icon', ['field' => 'quantity'])
@@ -114,6 +126,12 @@
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->category ? $product->category->name : '--' }}
+                        </td>
+                        <td class="align-middle text-center">
+                            {{ formatRupiah($product->buying_price) }}
+                        </td>
+                        <td class="align-middle text-center">
+                            {{ formatRupiah($product->selling_price) }}
                         </td>
                         <td class="align-middle text-center">
                             {{ $product->quantity }}

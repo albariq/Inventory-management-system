@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Models\Unit;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Picqer\Barcode\BarcodeGeneratorHTML;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Unit;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
-use Illuminate\Http\Request;
-use Picqer\Barcode\BarcodeGeneratorHTML;
-use Str;
 
 class ProductController extends Controller
 {

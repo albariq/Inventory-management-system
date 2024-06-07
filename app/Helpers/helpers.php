@@ -59,4 +59,11 @@ if (!function_exists('array_merge_numeric_values')) {
 
         return $merged;
     }
+
+if (!function_exists('formatRupiah')) {
+    function formatRupiah($amount)
+    {
+        return 'Rp ' . number_format($amount, 0, ',', '.');
+    }
+}
 }
